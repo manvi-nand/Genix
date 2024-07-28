@@ -5,21 +5,20 @@ const path = require("path");
 const ejsMate = require("ejs-mate");
 const session = require("express-session");
 const flash = require("connect-flash");
-//const nodemailer = require("nodemailer");
-//const bodyParser = require("body-parser");
 
+//here all the route files are imported
 const productRoutes = require("./Routes/productRoutes");
 const userRoutes = require("./Routes/userRoutes");
 const authRoutes = require("./Routes/authRoutes");
 const bidRoutes = require("./Routes/bidRoutes");
-//const reviewRoutes = require("./Routes/reviewRoutes");
 
+// connects to the MongoDB database named 'spidertask3'
 mongoose.connect("mongodb://127.0.0.1:27017/spidertask3", {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true, // search
 });
-
+// sets up event listeners for the MongoDB connection
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -30,12 +29,14 @@ const app = express();
 
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
+// Specifies the directory where the view templates are located.
 app.set("views", path.join(__dirname, "views")); 
 
 app.use(express.urlencoded({ extended: true })); // used to parse URL-encoded data
 app.use(methodOverride("_method")); // middleware allows you to use HTTP verbs such as PUT or DELETE in places where the client doesn't support it
 app.use(express.static(path.join(__dirname, "public")));
 //app.use(bodyParser.json()); //parses incoming requests with JSON payloads
+
 const sessionConfig = {
   secret: "thisisasecret",
   resave: false,
@@ -58,37 +59,19 @@ app.use((req, res, next) => {
   next();
 });
 
+// Registers the route handlers
 app.use(bidRoutes);
 app.use(productRoutes);
 app.use(userRoutes);
 app.use(authRoutes);
-//app.use(reviewRoutes);
 
-/*
-app.post("/send-email", (req, res) => {
-  const { to, subject, text } = req.body;
-
-  const mailOptions = {
-    from: "coolaiserver@gmail.com",
-    to,
-    subject,
-    text,
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return res.status(500).send(error.toString());
-    }
-    res.status(200).send("Email sent: " + info.response);
-  });
-});
-*/
 
 
 app.get("/", async (req, res) => {
   res.redirect("/login");
 });
 
+// Starts the Express server on port 3000 
 app.listen(3001, () => {
   console.log("Serving at port 3001");
 });

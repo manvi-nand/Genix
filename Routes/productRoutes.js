@@ -7,12 +7,14 @@ const Bid = require("../models/bidModel");
 const path = require("path");
 const fs = require("fs");
 const { checkAuth } = require("../middlewares/checkauth");
-
+// multer is used for handling file uploads
 const multer = require("multer");
 
 const storage = multer.diskStorage({
+  // Specifies the directory where uploaded files will be stored
   destination: "./public/uploads/",
   filename: function (req, file, cb) {
+    // defines how the filename of the uploaded file will be constructed
     cb(
       null,
       file.fieldname + "-" + Date.now() + path.extname(file.originalname)
@@ -40,12 +42,14 @@ function checkFileType(file, cb) {
   }
 }
 
+// helper function that associates a newly created product with the current user 
 const saveProduct = async (product, user_id) => {
   const currentUser = await User.findById(user_id);
   currentUser.products = await currentUser.products.concat(product._id);
   await currentUser.save();
 };
 
+// Renders a form to create a new product
 router.get("/newproduct", checkAuth, (req, res) => {
   res.render("productViews/newproduct", { req }); //req - every ejs file has req.session.userid to see if the user is present
 });
@@ -64,6 +68,7 @@ router.post("/newproduct", checkAuth, async (req, res) => {
         const owner = req.session.user_id;
         const highBidPrice = startPrice;
         const bidDeadline = req.body.deadline;
+        // Creates a new Product instance with the provided data and uploaded image.
         const product = new Product({
           name,
           description,
@@ -92,6 +97,8 @@ router.post("/newproduct", checkAuth, async (req, res) => {
   }
 });
 
+
+// This route is used to render a dashboard view with product listings
 router.get("/dashboard", async (req, res) => {
   try {
     const products = await Product.find({})
@@ -113,6 +120,7 @@ router.get("/dashboard", async (req, res) => {
   }
 });
 
+// displays detailed information about a specific product
 router.get("/product/:id/show", checkAuth, async (req, res) => {
   try {
     const product = await Product.findById(req.params.id)
@@ -129,13 +137,8 @@ router.get("/product/:id/show", checkAuth, async (req, res) => {
           path: "owner",
         },
       });
-    // .populate({
-    //   path: "reviews",
-    //   populate: {
-    //     path: "user",
-    //   },
-    // });
-
+    
+    // Retrieves the User document for the currently logged-in user based on the user_id stored in the session
     const currentUser = await User.findById(req.session.user_id);
 
     let now = Date.now();
@@ -161,11 +164,16 @@ router.get("/product/:id/show", checkAuth, async (req, res) => {
   }
 });
 
+
+/// operations that the user can perform on their product //
+
+// update the product
 router.get("/product/:id/update", checkAuth, async (req, res) => {
   try {
     const product = await Product.findById(req.params.id); //url 
     res.render("productViews/updateproduct", { product, req });
-  } catch (err) {
+  } 
+  catch (err) {
     console.log(err);
     req.flash("error_msg", "Something went wrong! Try again!");
     res.redirect("/dashboard");
@@ -189,6 +197,8 @@ router.put("/product/:id/update", checkAuth, async (req, res) => {
   }
 });
 
+
+// delete a product
 router.get("/product/:id/delete", checkAuth, async (req, res) => {
   try {
     const product = await Product.findById(req.params.id).populate("owner");
@@ -197,7 +207,7 @@ router.get("/product/:id/delete", checkAuth, async (req, res) => {
     const allBids = await Bid.find({ product: product._id });
     //console.log(allBids);
     let bidIds = [];
-    // if that product is deleted every bit for that prod should deleted
+    // if that product is deleted every bit for that prod should be deleted
     for (let i = 0; i < allBids.length; i++) {
       bidIds.push(allBids[i]);
     }
@@ -218,13 +228,16 @@ router.get("/product/:id/delete", checkAuth, async (req, res) => {
   }
 });
 
+
+// ending the bid before the deadline
 router.get("/product/:id/endbid", checkAuth, async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     product.canBid = false;
     await product.save();
     res.redirect(`/product/${product._id}/show`);
-  } catch (err) {
+  } 
+  catch (err) {
     console.log(err);
     req.flash("error_msg", "Something went wrong! Try again!");
     res.redirect("/dashboard");

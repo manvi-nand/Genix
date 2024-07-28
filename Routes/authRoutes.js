@@ -5,11 +5,13 @@ const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
 
+// route for the /register endpoint
 router.get("/register", (req, res) => {
   // Render the registration form with any flash messages
   res.render("authViews/register", { messages: req.flash(), req });
 });
 
+// handling form submissions for user registration
 router.post("/register", async (req, res) => {
   const { password, username, email, age, gender } = req.body;
 
@@ -38,10 +40,12 @@ router.post("/register", async (req, res) => {
   }
 });
 
+
+// GET route for the /login endpoint
 router.get("/login", (req, res) => {
   res.render("authViews/login");
 });
-
+// handling form submissions for user login
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findOne({ username });
@@ -61,6 +65,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Defining a GET route for the /logout endpoint
 router.get("/logout", (req, res) => {
   req.session.destroy();
   res.redirect("/dashboard");

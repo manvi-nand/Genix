@@ -1,13 +1,17 @@
+// file defines routes related to user-specific actions, 
+//such as viewing profiles, sorting products, and searching for products
+
 const express = require("express");
 const router = express.Router();
 
-//require models
+//required models
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
 const Bid = require("../models/bidModel");
-//const Review = require("../models/reviewModel");
 const { checkAuth } = require("../middlewares/checkauth");
 
+
+// Defines a GET route to display the user's profile
 router.get("/me/profile", checkAuth, async (req, res) => {
   try {
     const currentUser = await User.findById(req.session.user_id).populate(
@@ -17,33 +21,17 @@ router.get("/me/profile", checkAuth, async (req, res) => {
     const allBids = await Bid.find({ owner: currentUser._id }).populate(
       "product"
     );
-
-    // if(allBids.length > 0) {
-    //   //console.log(allBids);
-    //   let bidIds = []
-    //   for(let i=0;i<allBids.length;i++) {
-    //     bidIds = allBids[i].product._id;
-    //   }
-
-    //   for(let i=0;i<bidIds.length;i++) {
-    //     await Bid.findByIdAndDelete(bidIds[i]);
-    //   }
-
-      
-    // }
-
-    // for (let i = 0; i < allBids.length; i++) {
-    //   console.log(allBids[i].product.startPrice);
-    // }
-
     res.render("userViews/profile", { currentUser, req, allBids });
-  } catch (err) {
+  } 
+  catch (err) {
     console.log(err);
     req.flash("error_msg", "Something went wrong, Try again!");
     res.redirect("/dashboard");
   }
 });
 
+
+// Defines a GET route to display products in alphabetical order on the dashboard
 router.get("/dashboard/alpha", checkAuth, async (req, res) => {
   try {
     const products = await Product.find({})
@@ -81,6 +69,8 @@ router.post("/sort", async (req, res) => {
   }
 });
 
+
+// Searching for Products
 router.post("/search", async (req, res) => {
   try {
     const searchOption = req.body.searchoption;
@@ -100,12 +90,7 @@ router.post("/search", async (req, res) => {
             path: "owner",
           },
         })
-        // .populate({
-        //   path: "reviews",
-        //   populate: {
-        //     path: "user",
-        //   },
-        // });
+        
       res.render("productViews/tagsearch", { products, tag, req });
     }
     if (searchOption == "Search by name") {
@@ -125,12 +110,7 @@ router.post("/search", async (req, res) => {
               path: "owner",
             },
           })
-        //   .populate({
-        //     path: "reviews",
-        //     populate: {
-        //       path: "user",
-        //     },
-        //   });
+        
         res.render("productViews/namesearch", { products, name, req });
       } else {
         req.flash("error_msg", "Please enter something to search!");

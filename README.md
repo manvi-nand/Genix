@@ -239,6 +239,9 @@ Redirect to /product/:id/show
 
 
 
+
+
+
     git init - to initialize the repo
     git remote -v - to check the remote url 
     git remote set url - change the remote url 

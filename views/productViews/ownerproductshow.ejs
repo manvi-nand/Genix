@@ -112,16 +112,6 @@
     <p><strong>Owner : </strong><%=product.owner.username%></p>
     <p><strong>Tag : </strong><%=product.tag%></p>
 
-    <!--
-    <% let sum %> <% if(product.reviews.length == 0){%> <% sum =0 %> <% } else {
-    %> <% sum = 0 %> <% for(review of product.reviews ){ %> <%
-    sum=sum+review.rating %> <% } %> <% sum = (sum/(product.reviews.length))%>
-    <% } %> <% if(Number.isInteger(sum)){ %>
-    <p><strong>Overall Rating : </strong><%=sum%>/5</p>
-    <% } else { %>
-    <p><strong>Overall Rating : </strong><%=sum.toFixed(2)%>/5</p>
-    <% } %>
-    -->
 
     <p><strong>Starting price : </strong>₹ <%=product.startPrice%></p>
 
@@ -230,32 +220,3 @@
 <% } %>
 
 <br /><br />
-<!--
-    <h4 style='color:rgb(238, 96, 111);text-align: center;'>All Comments</h4>
-
-    <% if(product.reviews.length==0){ %>
-        
-        <p style='color:rgb(238, 96, 111);text-align: center;'> No one has commented on this product yet! </p>
-        
-    <% } else { %> 
- 
-    <% for(review of product.reviews){ %>
- 
-     <div class='allcomments'>
- 
-         <p style='color:rgb(238, 96, 111);font-weight: bold;'><%=review.user.username%></p><span>at <%=review.updatedAt.toLocaleDateString()%> <%=review.updatedAt.toLocaleTimeString()%>  </span><hr>
-         <p><strong style='color:rgb(238, 96, 111);'>Rating : </strong><%=review.rating%>/5</p>
-         <p><strong style='color:rgb(238, 96, 111);'>Comment : </strong><%=review.comment%></p>
- 
-         <% if(review.user.equals(currentUser._id)){ %> 
-             <a role='button' style='margin:10px;background-color:rgb(238, 96, 111);' class='btn btn-danger' href='/product/<%=product._id%>/review/<%=review._id%>/delete'>Delete</a>
-             
-             <a role='button'  style='margin:10px;background-color:rgb(238, 96, 111);' class='btn btn-danger' href='/product/<%=product._id%>/review/<%=review._id%>/edit'>Edit</a>
-         <% } %> 
-            
-     </div>
-
-     <% } %>
-     
-     <% } %> 
-     -->
