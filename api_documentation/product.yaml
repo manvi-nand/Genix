@@ -1,0 +1,224 @@
+openapi: 3.0.3
+info:
+  title: Auction Platform API
+  description: API for managing products and bids in an auction platform.
+  version: 1.0.0
+servers:
+  - url: /api
+paths:
+  /newproduct:
+    get:
+      summary: Render new product form
+      description: Renders the form for creating a new product.
+      responses:
+        '200':
+          description: Success
+          content:
+            text/html:
+              schema:
+                type: string
+    post:
+      summary: Create a new product
+      description: Creates a new product with the provided details.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                startPrice:
+                  type: number
+                tag:
+                  type: string
+                deadline:
+                  type: string
+                  format: date-time
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '302':
+          description: Product created and redirected to product view page
+          headers:
+            Location:
+              description: URL of the new product
+              schema:
+                type: string
+        '400':
+          description: Error creating product
+  /dashboard:
+    get:
+      summary: View all products
+      description: Retrieves and displays all products sorted by highest bid price.
+      responses:
+        '200':
+          description: Success
+          content:
+            text/html:
+              schema:
+                type: string
+        '400':
+          description: Error retrieving products
+  /product/{id}/show:
+    get:
+      summary: View product details
+      description: Retrieves and displays the details of a specific product.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Product ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/html:
+              schema:
+                type: string
+        '400':
+          description: Error retrieving product
+  /product/{id}/update:
+    get:
+      summary: Render update product form
+      description: Renders the form to update a specific product.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Product ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/html:
+              schema:
+                type: string
+        '400':
+          description: Error rendering update form
+    put:
+      summary: Update product details
+      description: Updates the details of a specific product.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Product ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '302':
+          description: Product updated and redirected to product view page
+          headers:
+            Location:
+              description: URL of the updated product
+              schema:
+                type: string
+        '400':
+          description: Error updating product
+  /product/{id}/delete:
+    get:
+      summary: Delete product
+      description: Deletes a specific product.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Product ID
+          schema:
+            type: string
+      responses:
+        '302':
+          description: Product deleted and redirected to dashboard
+          headers:
+            Location:
+              description: URL of the dashboard
+              schema:
+                type: string
+        '400':
+          description: Error deleting product
+  /product/{id}/endbid:
+    get:
+      summary: End bidding on product
+      description: Ends the bidding on a specific product.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Product ID
+          schema:
+            type: string
+      responses:
+        '302':
+          description: Bidding ended and redirected to product view page
+          headers:
+            Location:
+              description: URL of the product
+              schema:
+                type: string
+        '400':
+          description: Error ending bidding
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        startPrice:
+          type: number
+        tag:
+          type: string
+        owner:
+          type: string
+        highBidPrice:
+          type: number
+        highestBid:
+          $ref: '#/components/schemas/Bid'
+        bidDeadline:
+          type: string
+          format: date-time
+        canBid:
+          type: boolean
+    Bid:
+      type: object
+      properties:
+        price:
+          type: number
+        owner:
+          type: string
+          description: User ID of the bidder
+        product:
+          type: string
+          description: Product ID of the bid
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

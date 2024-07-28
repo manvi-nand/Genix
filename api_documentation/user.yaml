@@ -1,0 +1,135 @@
+openapi: 3.0.3
+info:
+  title: Auction Platform API
+  description: API for managing user profiles, products, and bids in an auction platform.
+  version: 1.0.0
+servers:
+  - url: /api
+paths:
+  /me/profile:
+    get:
+      summary: Get user profile
+      description: Retrieves the current user's profile, including products and bids.
+      responses:
+        '200':
+          description: Success
+          content:
+            text/html:
+              schema:
+                type: string
+        '400':
+          description: Error retrieving user profile
+        '401':
+          description: Unauthorized access
+  /dashboard/alpha:
+    get:
+      summary: Get products sorted alphabetically
+      description: Retrieves all products sorted alphabetically by name.
+      responses:
+        '200':
+          description: Success
+          content:
+            text/html:
+              schema:
+                type: string
+        '400':
+          description: Error retrieving products
+        '401':
+          description: Unauthorized access
+  /sort:
+    post:
+      summary: Sort products
+      description: Redirects to sorted product views based on the selected option.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                sort:
+                  type: string
+                  enum: [highestbid, alpha]
+      responses:
+        '302':
+          description: Redirected to the sorted product list
+          headers:
+            Location:
+              description: URL of the sorted products
+              schema:
+                type: string
+        '400':
+          description: Error sorting products
+  /search:
+    post:
+      summary: Search products
+      description: Searches products based on the provided tag or name.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                searchoption:
+                  type: string
+                  enum: [Search by tag, Search by name]
+                tag:
+                  type: string
+                product:
+                  type: string
+      responses:
+        '200':
+          description: Search results
+          content:
+            text/html:
+              schema:
+                type: string
+        '400':
+          description: Error searching products
+        '401':
+          description: Unauthorized access
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        age:
+          type: integer
+        gender:
+          type: string
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        startPrice:
+          type: number
+        tag:
+          type: string
+        owner:
+          $ref: '#/components/schemas/User'
+        highBidPrice:
+          type: number
+        highestBid:
+          $ref: '#/components/schemas/Bid'
+        bids:
+          type: array
+          items:
+            $ref: '#/components/schemas/Bid'
+    Bid:
+      type: object
+      properties:
+        price:
+          type: number
+       

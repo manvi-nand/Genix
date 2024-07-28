@@ -1,185 +1,294 @@
-<% layout('layouts/boilerplate')%> 
+<% layout('layouts/boilerplate')%>
 <style>
-    #head{
-        color:blue;
-        text-align: center;
-    }
-    .card{
-        display:flex;
-        flex-direction: row;
-        border : 0.5px solid grey;
-        height:280px;
-        max-width: 600px;
-        margin: 30px auto;
-        padding:20px;
-        text-align:center;
-        box-shadow: 0 4px 8px 0 rgba(226, 18, 18, 0.2), 0 6px 20px 0 rgba(226, 9, 9, 0.19);
-    }
-    .cardImage{
-        margin:auto 0;
-    }
-    .cardDesc{
-        float:right;
-        margin :0 auto;
+  #head {
+    color: blue;
+    text-align: center;
+  }
+  #card-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-left: 2rem;
+  }
+  .card {
+    width: 18rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+  }
+  .timer {
+    font-size: 1.2rem;
+    color: #dc3545;
+  }
+  .cardImage {
+    margin: auto 0;
+  }
+  .cardDesc {
+    float: right;
+    margin: 0 auto;
+  }
+  .cardDesc > p,
+  button {
+    margin: 10px 0;
+  }
+  .topbar {
+    display: flex;
+    flex-direction: row;
+  }
+  .topbar > div {
+    display: inline;
+  }
+  .search {
+    margin-left: auto;
+  }
+  #inputfield {
+    display: inline;
+  }
+  #selectfield {
+    display: none;
+  }
+  #color {
+    color: #f5cce9;
+    font-weight: bold;
+  }
+  .sort {
+    margin: 10px;
+  }
+  .search {
+    padding: 10px;
+  }
 
-    }
-    .cardDesc>p,button{
-        margin : 10px 0;
-    }
-    .topbar{
-        display:flex;
-        flex-direction: row;
-    }
-    .topbar>div{
-        display: inline;
-    }
-    .search{
-        margin-left: auto;
-    }
-    #inputfield{
-        display: inline;
-    }
-    #selectfield{
-        display:none;
-    }
-    #color{
-        color:rgb(238, 96, 111);
-        font-weight: bold;
-    }
-    .sort{
-        margin:10px;
-    }
-    .search{
-        padding:10px;
-    }
-   
-    
+  .gradient-button {
+    background: linear-gradient(to right, red, blue);
+    color: white;
+    width: 100%;
+    border: none;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .gradient-button:hover {
+    background: linear-gradient(to right, darkred, darkblue);
+  }
+
+  .hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 20px;
+    background-color: #fff;
+  }
+
+  .hero-text {
+    max-width: 50%;
+  }
+
+  .hero-text h1 {
+    font-size: 3em;
+    margin: 0 0 20px;
+  }
+
+  .hero-text p {
+    font-size: 1.2em;
+    margin: 0 0 20px;
+  }
+
+  .hero-text .watch-video {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+
+  .hero-image {
+    position: relative;
+  }
+
+  .hero-image img {
+    max-width: 100%;
+    height: auto;
+  }
 </style>
 
-    <div class='topbar'>
+<div class="topbar">
+  <div class="sort">
+    <form action="/sort" method="POST">
+      <label for="sort" style="font-size: 18px; color: black !important"
+        ><b>SORT BY : &nbsp</b>
+      </label>
+      <select
+        id="sort"
+        style="width: 200px; height: 35px; margin-right: 10px"
+        name="sort"
+      >
+        <% if(alpha==1){ %>
+        <option value="alpha">Alphabetically</option>
+        <option value="highestbid">Highest Bidded</option>
+        <% } else { %>
+        <option value="highestbid">Highest Bidded</option>
+        <option value="alpha">Alphabetically</option>
+        <% } %>
+      </select>
+      <button class="btn" style="background-color: #f5cce9" type="submit">
+        Sort
+      </button>
+    </form>
+  </div>
 
-        <div class='sort'>
-        
-            <form action='/sort' method='POST'>
+  <div class="search">
+    <form action="/search" method="POST">
+      <input
+        id="inputfield"
+        type="text"
+        name="product"
+        placeholder="Search"
+        style="height: 35px; margin-right: 10px"
+      />
 
-                <label for='sort' style='font-size: 18px;' id='color'>SORT BY : &nbsp</label>
-                <select id='sort' style='width:200px;height:35px;margin-right: 10px;' name='sort'>
-                    <% if(alpha==1){ %>
-                        <option value='alpha'>Alphabetically</option>
-                        <option value='highestbid'>Highest Bidded</option>
-                    <% } else { %>
-                        <option value='highestbid'>Highest Bidded</option>
-                        <option value='alpha'>Alphabetically</option>
-                    <% } %> 
+      <span id="selectfield">
+        <select
+          name="tag"
+          style="height: 35px; width: 200px; margin-right: 10px"
+        >
+        <option value="Cars">Cars</option>
+        <option value="Bikes">Bikes</option>
+        <option value="Antiques">Antiques</option>
+        <option value="Clothes">Clothes</option>
+        <option value="Paintings">Paintings</option>
+        <option value="Collections">Collections</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Others">Others</option>
+        </select>
+      </span>
 
-                </select>
-                <button class='btn btn-danger' style='background-color:rgb(238, 96, 111);' type='submit'>Sort</button>
+      <select
+        name="searchoption"
+        id="selectOption"
+        onchange="return changeInput()"
+        style="height: 35px; width: 200px; margin-right: 10px"
+      >
+        <option value="Search by name">Search by name</option>
+        <option value="Search by tag">Search by tag</option>
+      </select>
 
-            </form>
+      <button
+        class="btn"
+        style="height: 35px; background-color: #f5cce9"
+        type="submit"
+      >
+        Search
+      </button>
+    </form>
+  </div>
+</div>
 
-        </div>
+<script>
+  function changeInput() {
+    let selectInput = document.getElementById("selectOption");
+    let selectValue = selectInput.value;
+    if (selectValue == "Search by tag") {
+      document.getElementById("inputfield").style.display = "none";
+      document.getElementById("selectfield").style.display = "inline";
+    }
+    if (selectValue == "Search by name") {
+      document.getElementById("inputfield").style.display = "inline";
+      document.getElementById("selectfield").style.display = "none";
+    }
+    return true;
+  }
+</script>
 
-        <div class='search'>
+<hr />
 
-            <form action='/search' method='POST'>
+<main>
+  <section class="hero">
+    <div class="hero-text">
+      <h1>
+        Your Gateway to <span style="color: #007bff">Extraordinary Finds</span>
+      </h1>
+      <p>
+        Unlock deals, bid smart, and seize the moment with our online bidding
+        bonanza!
+      </p>
+    </div>
+    <div class="hero-image">
+      <img
+        src="https://document360.com/wp-content/uploads/2024/02/D360_New-client-onboarding-in-Wealth-management-03-1-2048x1165.jpg"
+        alt="Excited woman pointing at her phone"
+      />
+    </div>
+  </section>
+</main>
 
-                <input id='inputfield' type='text' name='product' placeholder='Search' style='height:35px;margin-right: 10px;'>
+<h3 class="text-left" style="margin-left: 2.85rem">All Products</h3>
 
-                <span id='selectfield' >
+<div id="card-container">
+  <% if(products.length!=0){ %> <% for(product of products){ %>
 
-                    <select  name='tag' style='height:35px;width:200px;margin-right: 10px;' >
-                        <option value="Ancient Sculptures">Ancient Sculptures</option>
-                        <option value='Antique Jewelry'>Antique Jewelry</option>
-                        <option value='Ancient Clocks'>Ancient Clocks</option>
-                        <option value='Ancient utencils'>Ancient utencils</option>
-                        <option value='Porcelain and Glass antiques'>Porcelain and Glass antiques</option>
-                        <option value='Old Paintings'>Old Paintings</option>
-                        <option value='Old coin collections'>Old coin collections</option>
-                        <option value='General ancient collections'>General ancient collections</option>
-                    </select>
-
-                </span>
-
-                <select name='searchoption' id='selectOption' onchange="return changeInput()" style='height:35px;width:200px;margin-right: 10px;'>
-                    
-                    <option value='Search by name'>Search by name</option>
-                    <option value='Search by tag'>Search by tag</option>
-                    
-                </select>
-
-                <button class='btn btn-danger' style='height:35px;background-color:rgb(238, 96, 111);' type='submit'>Search</button>
-
-            </form>
-
-        </div>
-
+  <div class="card">
+    <div class="cardImage">
+      <img
+        src="data:image/<%=product.image.contentType %>;base64, 
+                  <%=product.image.data.toString('base64') %>"
+        width="200"
+        height="150"
+        alt="Image"
+        class="card-img-top"
+      />
     </div>
 
-    <script>
-        function changeInput(){
-            let selectInput = document.getElementById('selectOption');
-            let selectValue = selectInput.value;
-            if(selectValue=='Search by tag'){
-                document.getElementById('inputfield').style.display='none';
-                document.getElementById('selectfield').style.display = 'inline';
-            }
-            if(selectValue=='Search by name'){
-                document.getElementById('inputfield').style.display='inline';
-                document.getElementById('selectfield').style.display = 'none';
-            }
-            return true;
-        }
+    <div class="cardDesc">
+      <p class="card-title" style="font-weight: bold"><%=product.name%></p>
+      <% if(product.canBid==false){ %>
 
+      <p style="font-weight: bold; color: rgb(238, 96, 111)">
+        (Bidding ended!)
+      </p>
 
-    </script>
+      <% } else { %>
+      <p style="font-weight: bold; color: rgb(96, 238, 111)">(Live Bid)</p>
+      <% } %>
+      <p style="font-weight: bold">
+        <span style="font-weight: normal">Tag : </span><%=product.tag%>
+      </p>
+      <p style="font-weight: bold">
+        <span style="font-weight: normal">Current Bidding Price : </span>₹
+        <%=product.highBidPrice%>
+      </p>
+      <% if(!product.highestBid){ %>
 
-    <hr>
+      <p>No one bidded this product yet!</p>
 
-    <h3 class="mb-5 mt-4 text-center" style='color:rgb(238, 96, 111);'>All Products</h3>
+      <% } else {%>
 
-    <% if(products.length!=0){ %> 
+      <p style="font-weight: bold">
+        <span style="font-weight: normal">Highest Bidder : </span
+        ><%=product.highestBid.owner.username%>
+      </p>
 
-    <% for(product of products){ %>
+      <% } %>
 
-        <div class='card'>
+      <a
+        role="button"
+        href="/product/<%=product._id%>/show"
+        class="btn btn-danger gradient-button"
+        >View Product</a
+      >
+    </div>
+  </div>
 
-            <div class='cardImage'>
-                <img src="data:image/<%=product.image.contentType %>;base64, 
-                <%=product.image.data.toString('base64') %>" width="200" height="200" alt="Image"> 
-            </div>
+  <% } %> <% } else { %>
 
-            <div class='cardDesc' >
-                <p style="font-weight: bold;"><%=product.name%></p>
-                <% if(product.canBid==false){ %>
-                
-                    <p style='font-weight: bold;color:rgb(238, 96, 111);'>(Bidding ended!)</p>
-    
-                <% } %> 
-                <p><span style="font-weight: bold;">Tag : </span><%=product.tag%></p>
-                <p><span style="font-weight: bold;">Current Bidding Price : </span>₹ <%=product.highBidPrice%> </p>
-                <% if(!product.highestBid){ %>
-                   
-                    <p>No one bidded this product yet!</p>
-                
-                <% } else {%>
-                    
-                    <p><span style="font-weight: bold;">Highest Bidder : </span><%=product.highestBid.owner.username%> </p>
+  <p style="color: rgb(238, 96, 111); text-align: center">
+    Currently no products are in Auction!
+  </p>
 
-                <% } %> 
+  <p style="color: rgb(238, 96, 111); text-align: center">
+    Click on <strong>Add New</strong> to add your Antiques for Auction!
+  </p>
 
-                <a role="button" style='background-color:rgb(238, 96, 111);border:0px;margin-top: 8px;' href='/product/<%=product._id%>/show' class="btn btn-danger">View Product</a>
-            </div>
-
-        </div>
-
-    <% } %>
-
-    <% } else { %> 
-
-        <p style='color:rgb(238, 96, 111);text-align: center;'>Currently no products are in Auction! </p>
-
-        <p style='color:rgb(238, 96, 111);text-align: center;'>Click on <strong>Add New</strong> to add your Antiques for Auction!</p>
-
-    <% } %> 
-
-
+  <% } %>
+</div>

@@ -1,0 +1,80 @@
+openapi: 3.0.3
+info:
+  title: Bidding API
+  description: API route for placing bids on products in an auction platform.
+  version: 1.0.0
+servers:
+  - url: /api
+paths:
+  /product/{productid}/bid/{userid}:
+    post:
+      summary: Place a bid on a product
+      description: Allows an authenticated user to place a bid on a specific product.
+      parameters:
+        - in: path
+          name: productid
+          required: true
+          description: ID of the product to bid on
+          schema:
+            type: string
+        - in: path
+          name: userid
+          required: true
+          description: ID of the user placing the bid
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                price:
+                  type: number
+                  description: The bid price
+      responses:
+        '302':
+          description: Bid successfully placed
+          headers:
+            Location:
+              description: URL of the referring page
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Your Bid has been added!"
+        '400':
+          description: Error occurred during bidding process
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Something went wrong, Try again!"
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Bid:
+      type: object
+      properties:
+        price:
+          type: number
+        owner:
+          type: string
+          description: User ID of the bidder
+        product:
+          type: string
+          description: Product ID of the bid
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string

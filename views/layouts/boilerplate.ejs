@@ -1,80 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>Antique Auctions</title>
+    <meta charset="UTF-8" />
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+      integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=PT+Sans:400,700"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../stylesheets/main.css" />
 
-<head>
-  <title>Antique Auctions</title>
-  <meta charset="UTF-8">
-  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-    crossorigin="anonymous">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
-    crossorigin="anonymous">
-  <link href="https://fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
-</head>
+    <style>
+      footer {
+        background-color: #131a26;
+        padding: 20px 40px;
+        color: #fff;
+      }
 
-<body style='margin:0'>
-  <nav id="mainNavbar" class="navbar navbar-expand-lg navbar-dark bg-danger">
-    <div class="container">
-      <a class="navbar-brand" href="#"><i class="fab fa-old-republic"></i>&nbspAntique Auctions</a>
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-        aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li id="home" class="nav-item">
-            <a class="nav-link" href="/dashboard">All Antiques</a>
-          </li>
-          <li id="newCampground" class="nav-item">
-            <a class="nav-link" href="/newproduct">Add new </a>
-          </li>
-        </ul>
-        <ul class="navbar-nav ml-auto">
-            <li id="login" class="nav-item">
-                <a class="nav-link" href="/me/profile"><i class="fas fa-house-user"></i>&nbspProfile</a>
-              </li>
-            <li id="login" class="nav-item">
-              <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i>&nbspLogout</a>
+      .footer-logo {
+        display: flex;
+        align-items: center;
+      }
+
+      .footer-logo img {
+        height: 30px;
+        margin-right: 10px;
+      }
+
+      .footer-logo span {
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+
+      .footer-nav {
+        display: flex;
+        gap: 40px;
+      }
+
+      .footer-nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .footer-nav li {
+        margin-bottom: 10px;
+      }
+
+      .footer-nav a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1em;
+      }
+
+      .footer-social a {
+        margin-left: 10px;
+      }
+
+      .footer-social img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .navbar-logo {
+            height: 55px; /* Adjust this value to change logo size */
+            margin-right:-7px; /* Space between logo and text */
+            vertical-align: middle; /* Align logo with text */
+            margin-bottom: 0.7rem;
+      }
+    </style>
+  </head>
+
+  <body style="margin: 0">
+    <nav
+      id="mainNavbar"
+      class="navbar navbar-expand-lg navbar-dark"
+      style="background-color: #ffe5f1; padding: 0px 0;"
+    >
+      <div class="container">
+        <a class="navbar-brand" href="/dashboard" style="color: black"
+          > <img src="/assets/mainlogo.png" alt="Logo" class="navbar-logo" />
+          <b style="font-size: 1.5em; " >&nbsp; Genix <span style="color: #007bff">Auctions</span></b></a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li id="home" class="nav-item">
+              <a class="nav-link" href="/dashboard" style="color: black"
+                >Auctions</a
+              >
             </li>
-        </ul>
+            <li id="newCampground" class="nav-item">
+              <a class="nav-link" href="/newproduct" style="color: black"
+                >Add new
+              </a>
+            </li>
+          </ul>
+          <ul class="navbar-nav ml-auto">
+            <li id="login" class="nav-item">
+              <a class="nav-link" href="/me/profile" style="color: black"
+                ><i class="fas fa-house-user"></i>&nbspProfile</a
+              >
+            </li>
+            <% if(req.session.user_id) { %>
+            <li id="login" class="nav-item">
+              <a class="nav-link" href="/logout" style="color: black"
+                ><i class="fas fa-sign-out-alt"></i>&nbspLogout</a
+              >
+            </li>
+            <% } else { %>
+            <li id="login" class="nav-item">
+              <a class="nav-link" href="/login" style="color: black"
+                ><i class="fas fa-sign-out-alt"></i>&nbspLogin</a
+              >
+            </li>
+            <% } %>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-    crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/scrollreveal"></script>
-  <script>
-    // ScrollReveal().reveal('.jumbotron-text', { duration: 2000 });
-    ScrollReveal().reveal('.indexCards', {
-      interval: 150, mobile: true, viewFactor: 0.3
-    });
-    (function () {
-      'use strict';
-      window.addEventListener('load', function () {
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.getElementsByClassName('needs-validation');
-        // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function (form) {
-          form.addEventListener('submit', function (event) {
-            if (form.checkValidity() === false) {
-              event.preventDefault();
-              event.stopPropagation();
-            }
-            form.classList.add('was-validated');
-          }, false);
-        });
-      }, false);
-    })();
-  </script>
-  <script>
+    </nav>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script>
+      // ScrollReveal().reveal('.jumbotron-text', { duration: 2000 });
+      ScrollReveal().reveal(".indexCards", {
+        interval: 150,
+        mobile: true,
+        viewFactor: 0.3,
+      });
+      (function () {
+        "use strict";
+        window.addEventListener(
+          "load",
+          function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName("needs-validation");
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(
+              forms,
+              function (form) {
+                form.addEventListener(
+                  "submit",
+                  function (event) {
+                    if (form.checkValidity() === false) {
+                      event.preventDefault();
+                      event.stopPropagation();
+                    }
+                    form.classList.add("was-validated");
+                  },
+                  false
+                );
+              }
+            );
+          },
+          false
+        );
+      })();
+    </script>
+    <script>
       if (window.location.pathname === "/campgrounds") {
         document.title = "YelpCamp";
         document.getElementById("home").classList.toggle("active");
@@ -85,22 +215,38 @@
         document.title = "Sign Up";
         document.getElementById("register").classList.toggle("active");
       } else if (window.location.pathname == "/campgrounds/new") {
-        document.title = "Add Campground"
+        document.title = "Add Campground";
         document.getElementById("newCampground").classList.toggle("active");
       } else if (window.location.pathname == "/about") {
-        document.title = "About"
+        document.title = "About";
         document.getElementById("about").classList.toggle("active");
       }
-  </script>
+    </script>
   </body>
 
-  <%- include('../partials/flash') %>
-  <%- body %> 
+  <%- include('../partials/flash') %> <%- body %>
 
-  <br><br>
+  <br /><br />
 
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">
+        
+        <span>Genix Auctions</span>
+      </div>
+      <nav class="footer-nav">
+        <a href="">Products</a>
+        <a href="">Auctions</a>
+        <a href="">About Us</a>
+        <a href="">Bidding</a>
+        <a href="">Contact</a>
+      </nav>
+      <div class="footer-social">
+        <a href=""> Twitter</a>
+        <a href=""> Facebook</a>
+        <a href=""> Instagram</a>
+        <a href=""> Github</a>
 
-
-
-  
-  </html>
+    </div>
+  </footer>
+</html>

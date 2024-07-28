@@ -1,0 +1,95 @@
+openapi: 3.0.3
+info:
+  title: User Authentication API
+  description: API routes for user registration, login, and logout in an auction platform.
+  version: 1.0.0
+servers:
+  - url: /api
+paths:
+  /register:
+    post:
+      summary: Handle user registration
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                email:
+                  type: string
+                age:
+                  type: integer
+                gender:
+                  type: string
+      responses:
+        '302':
+          description: Redirects to login page with success message
+          headers:
+            Location:
+              description: URL of the login page
+              schema:
+                type: string
+                example: '/login'
+  /login:
+    post:
+      summary: Handle user login
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '302':
+          description: Redirects to dashboard with success message if login is successful
+          headers:
+            Location:
+              description: URL of the dashboard page
+              schema:
+                type: string
+                example: '/dashboard'
+  /logout:
+    get:
+      summary: Handle user logout
+      responses:
+        '302':
+          description: Redirects to dashboard after logging out
+          headers:
+            Location:
+              description: URL of the dashboard page
+              schema:
+                type: string
+                example: '/dashboard'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+        age:
+          type: integer
+        gender:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+
+
+

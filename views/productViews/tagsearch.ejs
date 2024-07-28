@@ -1,160 +1,184 @@
-<% layout('layouts/boilerplate')%> 
+<% layout('layouts/boilerplate')%>
 
 <style>
-    #head{
-        color:blue;
-        text-align: center;
-    }
-    .card{
-        display:flex;
-        flex-direction: row;
-        border : 0.5px solid grey;
-        height:280px;
-        max-width: 600px;
-        margin: 30px auto;
-        padding:20px;
-        text-align:center;
-        box-shadow: 0 4px 8px 0 rgba(226, 18, 18, 0.2), 0 6px 20px 0 rgba(226, 9, 9, 0.19);
-    }
-    .cardImage{
-        margin:auto 0;
-    }
-    .cardDesc{
-        float:right;
-        margin :0 auto;
-
-    }
-    .cardDesc>p,button{
-        margin : 10px 0;
-    }
-    .topbar{
-        display:flex;
-        flex-direction: row;
-    }
-    .topbar>div{
-        display: inline;
-    }
-    .search{
-        margin-left: auto;
-    }
-    #inputfield{
-        display: none;
-    }
-    #selectfield{
-        display:inline;
-    }
-    .search{
-        padding:10px;
-    }
-
+  #head {
+    color: blue;
+    text-align: center;
+  }
+  .card {
+    display: flex;
+    flex-direction: row;
+    border: 0.5px solid grey;
+    height: 280px;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(226, 18, 18, 0.2),
+      0 6px 20px 0 rgba(226, 9, 9, 0.19);
+  }
+  .cardImage {
+    margin: auto 0;
+  }
+  .cardDesc {
+    float: right;
+    margin: 0 auto;
+  }
+  .cardDesc > p,
+  button {
+    margin: 10px 0;
+  }
+  .topbar {
+    display: flex;
+    flex-direction: row;
+  }
+  .topbar > div {
+    display: inline;
+  }
+  .search {
+    margin-left: auto;
+  }
+  #inputfield {
+    display: none;
+  }
+  #selectfield {
+    display: inline;
+  }
+  .search {
+    padding: 10px;
+  }
 </style>
 
-    <div class='topbar'>
+<div class="topbar">
+  <a
+    role="button"
+    style="margin: 10px; height: 38px; background-color: rgb(238, 96, 111)"
+    class="btn btn-danger"
+    href="/dashboard"
+    >Back to All Products</a
+  >
 
-        <a role='button' style='margin:10px;height:38px;background-color:rgb(238, 96, 111);' class='btn btn-danger' href='/dashboard'>Back to All Products</a>
+  <div class="search">
+    <form action="/search" method="POST">
+      <input
+        id="inputfield"
+        type="text"
+        name="product"
+        placeholder="Search"
+        style="height: 35px; margin-right: 10px"
+      />
 
-        <div class='search'>
+      <span id="selectfield">
+        <select
+          name="tag"
+          style="height: 35px; width: 200px; margin-right: 10px"
+        >
+          <option value="Cars">Cars</option>
+          <option value="Bikes">Bikes</option>
+          <option value="Antiques">Antiques</option>
+          <option value="Clothes">Clothes</option>
+          <option value="Paintings">Paintings</option>
+          <option value="Collections">Collections</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Others">Others</option>
+        </select>
+      </span>
 
-            <form action='/search' method='POST'>
+      <select
+        name="searchoption"
+        id="selectOption"
+        onchange="return changeInput()"
+        style="height: 35px; width: 200px; margin-right: 10px"
+      >
+        <option value="Search by tag">Search by tag</option>
+        <option value="Search by name">Search by name</option>
+      </select>
 
-                <input id='inputfield' type='text' name='product' placeholder='Search' style='height:35px;margin-right: 10px;'>
+      <button
+        class="btn btn-danger"
+        type="submit"
+        style="height: 35px; background-color: rgb(238, 96, 111)"
+      >
+        Search
+      </button>
+    </form>
+  </div>
+</div>
 
-                <span id='selectfield'>
+<script>
+  function changeInput() {
+    let selectInput = document.getElementById("selectOption");
+    let selectValue = selectInput.value;
+    if (selectValue == "Search by tag") {
+      document.getElementById("inputfield").style.display = "none";
+      document.getElementById("selectfield").style.display = "inline";
+    }
+    if (selectValue == "Search by name") {
+      document.getElementById("inputfield").style.display = "inline";
+      document.getElementById("selectfield").style.display = "none";
+    }
+    return true;
+  }
+</script>
 
-                    <select  name='tag' style='height:35px;width:200px;margin-right: 10px;' >
-                        <option value="Ancient Sculptures">Ancient Sculptures</option>
-                        <option value='Antique Jewelry'>Antique Jewelry</option>
-                        <option value='Ancient Clocks'>Ancient Clocks</option>
-                        <option value='Ancient utencils'>Ancient utencils</option>
-                        <option value='Porcelain and Glass antiques'>Porcelain and Glass antiques</option>
-                        <option value='Old Paintings'>Old Paintings</option>
-                        <option value='Old coin collections'>Old coin collections</option>
-                        <option value='General ancient collections'>General ancient collections</option>
-                    </select>
+<hr />
 
-                </span>
+<h3 class="mb-5 mt-4 text-center" style="color: rgb(238, 96, 111)">
+  Products with tag : <%=tag%>
+</h3>
 
-                <select name='searchoption' id='selectOption' onchange="return changeInput()" style='height:35px;width:200px;margin-right: 10px;'>
-                    
-                    <option value='Search by tag'>Search by tag</option>
-                    <option value='Search by name'>Search by name</option>
-                    
-                    
-                </select>
+<% if(products.length!=0){ %> <% for(product of products){ %>
 
-                <button class='btn btn-danger' type='submit' style='height:35px;background-color:rgb(238, 96, 111);'>Search</button>
+<div class="card">
+  <div class="cardImage">
+    <img
+      src="data:image/<%=product.image.contentType %>;base64, 
+                <%=product.image.data.toString('base64') %>"
+      width="200"
+      height="200"
+      alt="Image"
+    />
+  </div>
 
-            </form>
+  <div class="cardDesc">
+    <p style="font-weight: bold"><%=product.name%></p>
+    <% if(product.canBid==false){ %>
 
-        </div>
+    <p style="font-weight: bold; color: rgb(238, 96, 111)">(Bidding ended!)</p>
 
-    </div>
+    <% } %>
+    <p><span style="font-weight: bold">Tag : </span><%=product.tag%></p>
+    <p>
+      <span style="font-weight: bold">Current Bidding Price : </span>₹
+      <%=product.highBidPrice%>
+    </p>
+    <% if(!product.highestBid){ %>
 
-    <script>
-        function changeInput(){
-            let selectInput = document.getElementById('selectOption');
-            let selectValue = selectInput.value;
-            if(selectValue=='Search by tag'){
-                document.getElementById('inputfield').style.display='none';
-                document.getElementById('selectfield').style.display = 'inline';
-            }
-            if(selectValue=='Search by name'){
-                document.getElementById('inputfield').style.display='inline';
-                document.getElementById('selectfield').style.display = 'none';
-            }
-            return true;
-        }
+    <p>No one bidded this product yet!</p>
 
+    <% } else {%>
 
-    </script>
-
-<hr>
-
-    <h3 class="mb-5 mt-4 text-center" style='color:rgb(238, 96, 111);'>Products with tag : <%=tag%> </h3>
-
-    <% if(products.length!=0){ %> 
-
-    <% for(product of products){ %>
-
-        <div class='card'>
-
-            <div class='cardImage'>
-                <img src="data:image/<%=product.image.contentType %>;base64, 
-                <%=product.image.data.toString('base64') %>" width="200" height="200" alt="Image"> 
-            </div>
-
-            <div class='cardDesc' >
-                <p style="font-weight: bold;"><%=product.name%></p>
-                <% if(product.canBid==false){ %>
-                
-                    <p style='font-weight: bold;color:rgb(238, 96, 111);'>(Bidding ended!)</p>
-    
-                <% } %> 
-                <p><span style="font-weight: bold;">Tag : </span><%=product.tag%></p>
-                <p><span style="font-weight: bold;">Current Bidding Price : </span>₹ <%=product.highBidPrice%> </p>
-                <% if(!product.highestBid){ %>
-                   
-                    <p>No one bidded this product yet!</p>
-                
-                <% } else {%>
-                    
-                    <p><span style="font-weight: bold;">Highest Bidder : </span><%=product.highestBid.owner.username%> </p>
-
-                <% } %> 
-
-                <a role="button" style='background-color:rgb(238, 96, 111);border:0px;margin-top: 8px;' href='/product/<%=product._id%>/show' class="btn btn-danger">View Product</a>
-            </div>
-
-        </div>
+    <p>
+      <span style="font-weight: bold">Highest Bidder : </span
+      ><%=product.highestBid.owner.username%>
+    </p>
 
     <% } %>
 
-    <% } else { %> 
+    <a
+      role="button"
+      style="background-color: rgb(238, 96, 111); border: 0px; margin-top: 8px"
+      href="/product/<%=product._id%>/show"
+      class="btn btn-danger"
+      >View Product</a
+    >
+  </div>
+</div>
 
-        <p style='color:rgb(238, 96, 111);text-align: center;'>Currently no products are in Auction with the tag '<%=tag%>'!  </p>
+<% } %> <% } else { %>
 
-        
+<p style="color: rgb(238, 96, 111); text-align: center">
+  Currently no products are in Auction with the tag '<%=tag%>'!
+</p>
 
-    <% } %> 
-
-
+<% } %>
