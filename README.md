@@ -40,6 +40,20 @@ BACK-END
 3. Users
 
 
+## Functionalities
+1. Users can easily sign up, log in, and manage their auction activities.
+2. Users can create, view, update, and delete auction items.
+3. Users can participate in auctions by placing and tracking bids.
+4. Includes search and filtering options for auction items 
+5. Shows detailed information about the auction item.
+6. Allows users to manage their information
+7. Displays bid history
+8. Display a list of auction items with their current highest bids.
+9. Displays user's auction items and bids.
+10. Provides a form for placing bids and adding new products
+
+
+
 ## Data Flow
    **Routes**
 
@@ -95,111 +109,6 @@ Deleting Product:
 
 Ending Bid Early: 
 /product/:id/endbid → Fetch Product → Set canBid to False → Save Changes → Redirect to Product Page
-
-
-4. productRoute
-
-Creating a Product:
-/newproduct
-  |
-  v
-productViews/newproduct (Form)
-  |
-  v
-Submit Form
-  |
-  v
-[Server Actions]
-  |       |
-  |       v
-  |     File Upload
-  |       |
-  |       v
-  |   Save Product
-  |       |
-  |       v
-  |  /product/:id/show
-  v
-Redirect
-
-
-Viewing Dashboard:
-/dashboard
-  |
-  v
-Fetch Products
-  |
-  v
-productViews/dashboard
-
-
-Viewing Product:
-/product/:id/show
-  |
-  v
-Fetch Product Data
-  |
-  v
-Check Bid Status
-  |
-  v
-Owner View (if owner) / User View (if not owner)
-  |
-  v
-productViews/ownerproductshow or productViews/userproductshow
-
-
-Updating Product:
-/product/:id/update
-  |
-  v
-GET
-  |
-  v
-Fetch Product
-  |
-  v
-productViews/updateproduct (Form)
-  |
-  v
-Submit Update (PUT)
-  |
-  v
-[Server Actions]
-  |
-  v
-Redirect to /product/:id/show
-
-
-Deleting Product:
-/product/:id/delete
-  |
-  v
-Fetch Product and Owner
-  |
-  v
-Remove Product
-  |
-  v
-Redirect to /dashboard
-
-
-Ending Bid Early:
-/product/:id/endbid
-  |
-  v
-Fetch Product
-  |
-  v
-Set canBid to False
-  |
-  v
-Save Changes
-  |
-  v
-Redirect to /product/:id/show
-
-
 
 
 ## Schema Documentation
