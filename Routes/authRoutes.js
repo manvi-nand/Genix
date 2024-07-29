@@ -26,6 +26,7 @@ router.post("/register", async (req, res) => {
     );
     return res.redirect("/register");
   }
+  
 
   const user = await User.findOne({ username });
   if (!user) {
@@ -38,6 +39,7 @@ router.post("/register", async (req, res) => {
     req.flash("error_msg", "Username already taken! Try again!");
     res.redirect("/register");
   }
+  
 });
 
 

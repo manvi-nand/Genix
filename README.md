@@ -32,6 +32,7 @@ BACK-END
 1. NodeJS
 2. ExpressJS
 3. MongoDB
+4. REST API
 
 
 ## Schemas
